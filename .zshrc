@@ -31,3 +31,9 @@ setopt magic_equal_subst glob_subst unset
 setopt glob extended_glob bare_glob_qual glob_star_short
 setopt case_glob glob_dots no_null_glob nomatch
 # }}}
+# HISTORY {{{
+setopt inc_append_history hist_ignore_all_dups hist_ignore_space
+HISTFILE="${DATADIR:+$DATADIR/history}"
+HISTSIZE=10000
+SAVEHIST=10000
+# }}}
