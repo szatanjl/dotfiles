@@ -40,3 +40,45 @@ SAVEHIST=10000
 # JOB CONTROL {{{
 setopt monitor auto_continue hup check_jobs check_running_jobs no_notify
 # }}}
+# PROMPT {{{
+setopt prompt_cr prompt_percent prompt_subst
+PROMPT_EOL_MARK=''
+PS1='
+%B%F{green}%n@%M %F{blue}%~ %F{magenta}$(git_status) %F{red}%(?..^%?)%f%b
+%(!.#.$) '
+PS2='> '
+
+git_status() {
+	local branch
+	if branch="$(git branch --show-current)"; then
+		if [ -z "$branch" ]; then
+			branch="detached:$(git rev-parse --short HEAD)"
+		fi
+		printf '(%s' "$branch"
+		git status --porcelain --branch | awk -F '[][, ]' '
+			/^.?[AC]/ { add++ }
+			/^.?D/    { del++ }
+			/^.?[MR]/ { mod++ }
+			/^.?U/    { con++ }
+			/^.?\?/   { unt++ }
+			/^##/ {
+				if (NF > 2 && $(NF-2) == "behind")
+					behind = $(NF-1)
+				if (NF > 2 && $(NF-2) == "ahead")
+					ahead = $(NF-1)
+				if (NF > 5 && $(NF-5) == "ahead")
+					ahead = $(NF-4)
+			}
+			END {
+				if (add > 0) printf(" +%u", add)
+				if (del > 0) printf(" -%u", del)
+				if (mod > 0) printf(" ~%u", mod)
+				if (con > 0) printf(" !%u", con)
+				if (unt > 0) printf(" ?%u", unt)
+				if (ahead > 0) printf(" ^%u", ahead)
+				if (behind > 0) printf(" $%u", behind)
+			}'
+		printf ')'
+	fi 2> /dev/null
+}
+# }}}
