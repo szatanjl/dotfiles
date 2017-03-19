@@ -210,4 +210,68 @@ alias v='head -n 1000 --'
 # sudo {{{
 alias sudo='sudo '  # pass aliases over sudo
 # }}}
+# git {{{
+alias gch='git checkout'
+
+alias gst='git status'
+alias gsh='git show --name-status --pretty=fuller --decorate=no'
+
+alias gl='git log --oneline --decorate=no'
+alias gl1='gl -n 10'
+alias gl2='gl -n 20'
+alias gl3='gl -n 30'
+alias gl4='gl -n 40'
+alias gl5='gl -n 50'
+
+alias glg='git log --oneline --decorate=no --graph'
+alias glg1='glg -n 10'
+alias glg2='glg -n 20'
+alias glg3='glg -n 30'
+alias glg4='glg -n 40'
+alias glg5='glg -n 50'
+
+alias ga='git add'
+alias gap='git add --patch'
+alias gau='git add --update'
+
+alias grs='git reset'
+alias grh='git reset --hard'
+
+alias gc='git commit'
+alias gcm='git commit -m'
+alias gca='git commit --amend'
+alias gcn='git commit --all --amend --no-edit'
+
+alias gsu='git submodule update'
+
+alias gpr='git pull --rebase'
+alias gpu='git push'
+alias gpf='git push --force'
+
+# TODO: change to difftool
+alias gd='git diff'
+alias gdc='git diff --cached'
+# gds() { git diff $1~ $1 }
+# compdef _git gds=git-show
+alias gds='git show'
+
+alias gm='git mergetool --no-prompt'
+alias gma='git merge --abort'
+
+alias gcp='git cherry-pick'
+alias gcpa='git cherry-pick --abort'
+alias gcpc='git cherry-pick --continue'
+
+alias gr='git rebase'
+alias gri='git rebase --interactive --autostash'
+alias gra='git rebase --abort'
+alias grc='git rebase --continue'
+
+alias ggc='git -c gc.reflogExpire=0 -c gc.reflogExpireUnreachable=0 \
+               -c gc.rerereresolved=0 -c gc.rerereunresolved=0 \
+               gc --prune=now'
+
+# blame bisect clean clone cherry-pick describe stash tag submodule
+# TODO git log --follow -L<n,m:file> -- <file>
+# }}}
 # }}}
