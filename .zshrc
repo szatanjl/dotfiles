@@ -153,3 +153,6 @@ bm() {
 }
 bm -
 # }}}
+# ALIASES {{{
+setopt aliases
+# }}}
