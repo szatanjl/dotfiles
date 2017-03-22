@@ -12,3 +12,13 @@ fi
 # CHANGING DIRECTORIES {{{
 setopt auto_cd auto_pushd cd_silent pushd_ignore_dups pushd_minus
 # }}}
+# COMPLETION {{{
+setopt always_last_prompt auto_list auto_menu no_list_ambiguous
+setopt list_packed no_list_types complete_in_word glob_complete
+
+autoload -Uz compinit && compinit -D
+zstyle ':completion:*:commands' rehash 1             # rehash before completion
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'  # case insensitive
+zstyle ':completion:*' menu select                   # select with arrows
+zstyle ':completion:*:default' list-colors "${LS_COLORS-}"
+# }}}
