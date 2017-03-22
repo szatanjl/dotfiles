@@ -9,3 +9,6 @@ if [ -n "${XDG_DATA_HOME-}" ] || [ -n "${HOME-}" ]; then
 fi
 # }}}
 # }}}
+# CHANGING DIRECTORIES {{{
+setopt auto_cd auto_pushd cd_silent pushd_ignore_dups pushd_minus
+# }}}
