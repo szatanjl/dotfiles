@@ -22,3 +22,8 @@ zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'  # case insensitive
 zstyle ':completion:*' menu select                   # select with arrows
 zstyle ':completion:*:default' list-colors "${LS_COLORS-}"
 # }}}
+# EXPANSION {{{
+setopt bang_hist no_hist_verify hist_lex_words
+setopt equals no_ignore_braces rc_expand_param
+setopt magic_equal_subst glob_subst unset
+# }}}
