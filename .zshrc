@@ -82,3 +82,7 @@ git_status() {
 	fi 2> /dev/null
 }
 # }}}
+# OTHER {{{
+setopt no_flow_control no_ignore_eof interactive_comments rm_star_silent
+MAILCHECK=0
+# }}}
