@@ -188,4 +188,10 @@ alias f='find . -name'
 alias fd='find -L . -type d -name'
 alias ff='find -L . -type f -name'
 # }}}
+# grep {{{
+alias grep='grep --color=auto'
+alias s='grep -n -RI'
+alias sc='s --include="*.c"'
+alias sh='s --include="*.h"'
+# }}}
 # }}}
