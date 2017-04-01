@@ -86,3 +86,36 @@ git_status() {
 setopt no_flow_control no_ignore_eof interactive_comments rm_star_silent
 MAILCHECK=0
 # }}}
+# KEYBINDS {{{
+autoload -Uz up-line-or-beginning-search
+autoload -Uz down-line-or-beginning-search
+expand() {
+	zle _expand_alias
+	zle expand-word
+}
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+zle -N expand
+
+WORDCHARS='~!@#$%^&*_-+.?'
+
+bindkey -d
+
+bindkey '^A' beginning-of-line
+bindkey '^E' end-of-line
+bindkey '^H' emacs-backward-word
+bindkey '^L' emacs-forward-word
+
+bindkey '^K' up-line-or-beginning-search
+bindkey '^J' down-line-or-beginning-search  # this hangs mc after pressing enter
+bindkey '^R' history-incremental-search-backward
+bindkey '^F' history-incremental-search-forward
+
+bindkey '^W' backward-kill-word
+bindkey '^U' backward-kill-line
+bindkey "${terminfo[kdch1]}" delete-char
+
+bindkey '^ ' expand
+bindkey '^I' expand-or-complete
+bindkey "${terminfo[kcbt]}" reverse-menu-complete
+# }}}
