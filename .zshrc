@@ -27,3 +27,7 @@ setopt bang_hist no_hist_verify hist_lex_words
 setopt equals no_ignore_braces rc_expand_param
 setopt magic_equal_subst glob_subst unset
 # }}}
+# GLOBBING {{{
+setopt glob extended_glob bare_glob_qual glob_star_short
+setopt case_glob glob_dots no_null_glob nomatch
+# }}}
