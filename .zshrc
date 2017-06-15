@@ -37,3 +37,6 @@ HISTFILE="${DATADIR:+$DATADIR/history}"
 HISTSIZE=10000
 SAVEHIST=10000
 # }}}
+# JOB CONTROL {{{
+setopt monitor auto_continue hup check_jobs check_running_jobs no_notify
+# }}}
