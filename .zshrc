@@ -119,3 +119,37 @@ bindkey '^ ' expand
 bindkey '^I' expand-or-complete
 bindkey "${terminfo[kcbt]}" reverse-menu-complete
 # }}}
+# BOOKMARKS {{{
+BMFILE="${DATADIR:+$DATADIR/bookmarks}"
+
+bm() {
+	local bmark
+	if [ -z "${BMFILE-}" ]; then
+		return 1
+	fi
+	if [ -z "${1-}" ]; then
+		hash -d
+	elif [ "${1-}" != '-' ]; then
+		unhash -d -- "$1" > /dev/null 2>&1
+		{
+			if [ -f "$BMFILE" ]; then
+				sed -e "/^$1=/d" -- "$BMFILE"
+			fi
+			if [ "${2-}" != '-' ]; then
+				bmark="$(cd -- "${2-.}" && pwd -L)"
+				hash -d -- "$1=$bmark" > /dev/null 2>&1
+				printf '%s=%s\n' "$1" "$bmark"
+			fi
+		} > "$BMFILE.tmp"
+		mv -f -- "$BMFILE.tmp" "$BMFILE"
+	else
+		hash -dr > /dev/null 2>&1
+		if [ -f "$BMFILE" ]; then
+			while read -r bmark; do
+				hash -d -- "$bmark" > /dev/null 2>&1
+			done < "$BMFILE"
+		fi
+	fi
+}
+bm -
+# }}}
