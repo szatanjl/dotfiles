@@ -344,3 +344,52 @@ set wrap showbreak=~ breakat=\ \	 linebreak
 set breakindent breakindentopt=min:40,shift:4,sbr
 set display=lastline
 " }}}
+" FOLD {{{
+" Foldtext() {{{
+function! Foldtext() abort
+	for i in range(v:foldstart, v:foldend)
+		let line = substitute(getline(i), '^\s*', '', '')
+		let line = substitute(line, '\s*$', '', '')
+		if match(line, '[0-9A-Za-z{([]') != -1 ||
+		\  strchars(line) != strlen(line)
+			return repeat(' ', indent(i)) . line . ' ... '
+		endif
+	endfor
+	let line = substitute(getline(v:foldstart), '^\s*', '', '')
+	let line = substitute(line, '\s*$', '', '')
+	return repeat(' ', indent(v:foldstart)) . line . ' ... '
+endfunction
+" }}}
+set foldenable foldtext=Foldtext() foldcolumn=0
+set foldopen=insert,mark,quickfix,tag,undo foldclose=
+set foldmethod=marker foldlevelstart=0 foldminlines=1
+set foldmarker={{{,}}} foldignore= foldexpr=
+" Dont screw up folds when typing in insert mode {{{
+augroup VIMRC_fm
+	autocmd!
+augroup END
+
+autocmd VIMRC InsertEnter *
+\	if !exists('w:VIMRC_lfm') |
+\		let w:VIMRC_lfm=&foldmethod |
+\		set foldmethod=manual |
+\	endif |
+\	autocmd VIMRC_fm WinEnter *
+\		if !exists('w:VIMRC_lfm') |
+\			let w:VIMRC_lfm=&foldmethod |
+\			set foldmethod=manual |
+\		endif
+
+autocmd VIMRC WinLeave *
+\	if exists('w:VIMRC_lfm') |
+\		let &foldmethod = w:VIMRC_lfm |
+\		unlet w:VIMRC_lfm |
+\	endif
+autocmd VIMRC InsertLeave *
+\	if exists('w:VIMRC_lfm') |
+\		let &foldmethod = w:VIMRC_lfm |
+\		unlet w:VIMRC_lfm |
+\	endif |
+\	autocmd! VIMRC_fm
+" }}}
+" }}}
