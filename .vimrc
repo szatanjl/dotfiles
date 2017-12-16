@@ -410,3 +410,71 @@ if &diff
 	set nocursorline
 endif
 " }}}
+" FUNCTIONS {{{
+function! ToggleStlFname() abort
+	let b:stl_fname_short = 1 - get(b:, 'stl_fname_short')
+	let &ro = &ro
+endfunction
+
+function! ToggleTalFname() abort
+	let g:tal_fname_short = 1 - get(g:, 'tal_fname_short')
+	let &ro = &ro
+endfunction
+
+function! ToggleMatchCase() abort
+	let b:matchcase = 1 - get(b:, 'matchcase')
+endfunction
+
+function! ToggleFoldMethod() abort
+	if &fdm == 'syntax'
+		setlocal foldmethod=marker
+	else
+		setlocal foldmethod=syntax
+	endif
+endfunction
+
+function! ToggleIndent() abort
+	if &sw == 0
+		setlocal shiftwidth=4 expandtab
+	elseif &sw == 4
+		setlocal shiftwidth=2 expandtab
+	else
+		setlocal shiftwidth=0 noexpandtab
+	endif
+endfunction
+
+function! Join(...) range abort
+	let firstline = a:0 > 0 ? line('.') : a:firstline
+	let lastline = a:0 > 0 ? line('.') + a:1 : a:lastline
+	let lastline = lastline < line('$') ? lastline : line('$')
+	if &js
+		for i in range(firstline, lastline - 1)
+			let line = getline('.')
+			if line[-1:] == '.' ||
+			\  (&cpo !~# 'j' && line[-1:] =~ '[!?]')
+				call setline(i, line.'  ')
+			endif
+		endfor
+	endif
+	let js = &js
+	set nojoinspaces
+	execute firstline.','.lastline.'join'
+	let &js = js
+endfunction
+
+function! Split() abort
+	if match(getline('.'), '\%'.col('.').'c\s') != -1
+		normal! w
+	endif
+	execute "normal! i\<cr>\<esc>k$"
+	call ClearTrailingWhitespace(1)
+endfunction
+
+function! ClearTrailingWhitespace(keep_joinspaces) abort
+	let line = getline('.')
+	if line =~ '\s$' && (!a:keep_joinspaces || &cpo !~# 'J' ||
+	\                    line[-2:] !~ '[.!?] ')
+		call setline('.', substitute(line, '\s\+$', '', ''))
+	endif
+endfunction
+" }}}
