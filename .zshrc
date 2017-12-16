@@ -282,4 +282,8 @@ alias lf='ledg -B "^income" "^expenses"'
 alias lp='ledg -BX PLN "^assets" "^debts"'
 alias lc='ledg -VX PLN "^assets" "^debts"'
 # }}}
+# picocom {{{
+alias p0='picocom -s "sb -vv" -b 115200 /dev/ttyUSB0'
+alias p1='picocom -s "sb -vv" -b 921600 /dev/ttyUSB0'
+# }}}
 # }}}
