@@ -591,3 +591,19 @@ nnoremap <silent> \f :<c-u>call ToggleFoldMethod()<cr>
 " \i toggle indent between tabs, 4 spaces and 2 spaces
 nnoremap <silent> \i :<c-u>call ToggleIndent()<cr>
 " }}}
+" FILETYPES {{{
+" s:ft_* {{{ TODO
+function! s:ft_c() abort
+	let b:matchcase=1
+	setlocal foldmethod=syntax
+	setlocal shiftwidth=0 noexpandtab
+endfunction
+" }}}
+autocmd VIMRC FileType *
+\	if get(b:, 'VIMRC_ft', '') != &ft |
+\		let b:VIMRC_ft = &ft |
+\		if exists('*s:ft_' . &ft) |
+\			call s:ft_{&ft}() |
+\		endif |
+\	endif
+" }}}
