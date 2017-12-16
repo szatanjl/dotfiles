@@ -331,3 +331,8 @@ set scrolljump=1 scrolloff=0 sidescroll=1 sidescrolloff=1
 set whichwrap=<,>,[,] backspace=indent,eol,start virtualedit=block
 set selection=inclusive
 " }}}
+" SEARCH {{{
+set noshowmatch matchtime=5 matchpairs=(:),{:},[:]
+set ignorecase smartcase wrapscan noincsearch hlsearch gdefault
+set grepprg= grepformat= " TODO
+" }}}
