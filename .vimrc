@@ -322,3 +322,7 @@ set showtabline=2 tabline=%!Tabline()
 set noautochdir nomodeline noautoread
 set write nowriteany noautowrite noautowriteall confirm hidden
 " }}}
+" WINDOWS {{{
+set winheight=24 winminheight=1 winwidth=96 winminwidth=1
+set splitbelow splitright
+" }}}
