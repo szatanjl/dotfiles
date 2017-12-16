@@ -336,3 +336,11 @@ set noshowmatch matchtime=5 matchpairs=(:),{:},[:]
 set ignorecase smartcase wrapscan noincsearch hlsearch gdefault
 set grepprg= grepformat= " TODO
 " }}}
+" TEXT {{{
+set number norelativenumber numberwidth=5
+set cursorline nocursorcolumn colorcolumn=73,81
+set listchars=tab:\|\ ,trail:~,precedes:<,extends:> list
+set wrap showbreak=~ breakat=\ \	 linebreak
+set breakindent breakindentopt=min:40,shift:4,sbr
+set display=lastline
+" }}}
