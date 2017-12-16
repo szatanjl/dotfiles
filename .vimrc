@@ -478,3 +478,116 @@ function! ClearTrailingWhitespace(keep_joinspaces) abort
 	endif
 endfunction
 " }}}
+" BINDS {{{
+set tildeop nostartofline nrformats=alpha,hex
+set notimeout ttimeout timeoutlen=1000 ttimeoutlen=0
+
+" CTRL-J/K prev/next buffer
+nnoremap <silent> <c-j> :bprevious<cr>
+nnoremap <silent> <c-k> :bnext<cr>
+
+" TAB/SHIFT-TAB next/prev window
+nnoremap <tab> <c-w>w
+nnoremap <s-tab> <c-w>W
+
+" CTRL-ARROWS resize window
+nnoremap <c-left> <c-w><
+nnoremap <c-up> <c-w>-
+nnoremap <c-down> <c-w>+
+nnoremap <c-right> <c-w>>
+
+" SHIFT-J/K scroll
+noremap <silent> J @='3<c-v><c-e>'<cr>
+noremap <silent> K @='3<c-v><c-y>'<cr>
+
+" SHIFT-H/L horizontal scroll
+" noremap <silent> H @='3zh'<cr>
+" noremap <silent> L @='3zl'<cr>
+
+" j/k down/up also inside wrapped text
+noremap j gj
+noremap k gk
+noremap <up> g<up>
+noremap <down> g<down>
+
+" SHIFT-H/L move backward/forward word
+noremap H b
+noremap L w
+
+" CTRL-A/E home/end TODO change ^/$ to g^/g$ and 0 to g0 ?
+ noremap <c-a> ^
+inoremap <c-a> <c-o>^
+cnoremap <c-a> <home>
+ noremap <c-e> $
+inoremap <c-e> <c-o>$
+cnoremap <c-e> <end>
+
+" CTRL-O/P prev/next jumplist
+nnoremap <c-o> <c-o>zz
+nnoremap <c-p> <c-i>zz
+
+" n/N next/prev match
+nnoremap n nzz
+nnoremap N Nzz
+
+" / search with matchcase (\C) turned on depending on local option
+noremap / /<c-r>=(get(b:, 'matchcase') ? '\C' : '')<cr>
+
+" [count]* highlight word [count]# clear highlight TODO
+noremap <silent> * *<c-o>
+noremap <silent> # :<c-u>nohlsearch<cr>
+
+" SPACE toggle fold ,SPACE focus
+nnoremap <silent> <space> @=(&fdm == 'syntax' ? 'zA' : 'za')<cr>
+nnoremap ,<space> zM@=(&fdm == 'syntax' ? 'zO' : 'zv')<cr>zz
+
+" TODO >> <<
+
+" ? substitute
+noremap ? :<c-r>=('%'[!empty(getcmdline())])<cr>s/<c-r>=(get(b:, 'matchcase') ? '\C' : '')<cr>
+
+" ,n/,N increment/decrement number
+noremap ,n <c-a>
+noremap ,N <c-x>
+
+" ,j/,J join/split lines
+nnoremap <silent> ,j
+\	:<c-u>call Join(<c-r>=(v:count1 - 1 + (v:count == 0))<cr>) \|
+\	 <home>let pos = getpos('.') \|
+\	 <end>call setpos('.', pos)<cr>
+vnoremap <silent> ,j
+\	:call Join() \|
+\	 <home>let pos = getpos('.') \|
+\	 <end>call setpos('.', pos)<cr>
+nnoremap <silent> ,J :<c-u>call Split()<cr>
+
+" ,w/,W clear trailing whitespace
+noremap <silent> ,w
+\	:<c-r>=('%'[!empty(getcmdline())])<cr>
+\	 call ClearTrailingWhitespace(1) \|
+\	 <home>let view = winsaveview() \|
+\	 <end>call winrestview(view)<cr>
+noremap <silent> ,W
+\	:<c-r>=('%'[!empty(getcmdline())])<cr>
+\	 call ClearTrailingWhitespace(0) \|
+\	 <home>let view = winsaveview() \|
+\	 <end>call winrestview(view)<cr>
+
+" bb diff update
+nnoremap <silent> bb :diffupdate<cr>
+
+" bn/bN next/prev diff
+nnoremap bn ]c
+nnoremap bN [c
+
+" \s toggle statusline short file name
+nnoremap <silent> \s :<c-u>call ToggleStlFname()<cr>
+" \t toggle tabline short file name
+nnoremap <silent> \t :<c-u>call ToggleTalFname()<cr>
+" \c toggle matchcase
+nnoremap <silent> \c :<c-u>call ToggleMatchCase()<cr>
+" \f toggle foldmethod between marker and syntax
+nnoremap <silent> \f :<c-u>call ToggleFoldMethod()<cr>
+" \i toggle indent between tabs, 4 spaces and 2 spaces
+nnoremap <silent> \i :<c-u>call ToggleIndent()<cr>
+" }}}
