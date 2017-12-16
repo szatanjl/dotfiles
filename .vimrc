@@ -403,3 +403,10 @@ set textwidth=72 formatoptions=roqn1j joinspaces cpoptions+=J
 set formatlistpat=^\\s*\\([*+-]\\\|\\w\\+[.:)]\\)\\s*
 set formatprg= formatexpr= " TODO
 " }}}
+" DIFF {{{ diffopt(iwhite)
+set diffopt=filler,context:3,vertical,foldcolumn:0 diffexpr=
+set scrollopt=ver,hor,jump
+if &diff
+	set nocursorline
+endif
+" }}}
