@@ -318,3 +318,7 @@ endfunction
 set laststatus=2 statusline=%!Statusline()
 set showtabline=2 tabline=%!Tabline()
 " }}}
+" BUFFERS {{{
+set noautochdir nomodeline noautoread
+set write nowriteany noautowrite noautowriteall confirm hidden
+" }}}
