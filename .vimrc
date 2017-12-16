@@ -398,3 +398,8 @@ set shiftwidth=0 noexpandtab softtabstop=0 tabstop=8 smarttab
 set autoindent copyindent preserveindent noshiftround
 set equalprg= indentkeys= indentexpr= " TODO
 " }}}
+" FORMATTING {{{ formatoptions(wa)
+set textwidth=72 formatoptions=roqn1j joinspaces cpoptions+=J
+set formatlistpat=^\\s*\\([*+-]\\\|\\w\\+[.:)]\\)\\s*
+set formatprg= formatexpr= " TODO
+" }}}
