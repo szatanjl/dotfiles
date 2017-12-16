@@ -105,6 +105,7 @@ call s:hi('NonText', 'NONE', s:fg_alt, 'NONE')
 call s:hi('SpecialKey', 'NONE', s:fg_alt, 'NONE')
 
 call s:hi('Normal', 'NONE', s:fg_main, 'NONE')  " s:bg_main
+execute 'highlight Normal guibg='.s:gui(s:bg_main)
 call s:hi('ColorColumn', 'NONE', 'NONE', s:bg_alt)
 call s:hi('Visual', 'NONE', 'NONE', s:bg_sel)
 call s:hi('VisualNOS', 'NONE', 'NONE', s:bg_sel)
@@ -606,4 +607,51 @@ autocmd VIMRC FileType *
 \			call s:ft_{&ft}() |
 \		endif |
 \	endif
+" }}}
+" TODO {{{
+" TODO there can be two trailing spaces in markdown... so we need to change ClearWhitespace WrongWhitespace highlight etc.
+" TODO https://stackoverflow.com/questions/19030290/syntax-highlighting-causes-terrible-lag-in-vim/20519492#20519492
+" TODO ... check what is exactly the speed without lazyredraw and why cursorline slows down the vim
+" TODO ... check the speed with plain vim and with my .vimrc w/o cursorline and speed up if necessary
+" TODO ... trim trailing whitespace better? <https://www.youtube.com/watch?v=cTBgtN-s2Zw>
+" set lazyredraw
+set fillchars=vert:\|,diff:-
+
+autocmd VIMRC BufReadPost *
+\	if line("'\"") > 0 && line("'\"") <= line('$') |
+\		if &fdm == 'syntax' |
+\			execute 'silent! normal! g`"zOzz' |
+\		else |
+\			execute 'normal! g`"zvzz' |
+\		endif |
+\	endif
+
+nnoremap <silent> <c-f> :syntax sync fromstart<cr>
+
+" w, e, b are free for binds
+" backup should create directiores if they do not exist
+" diff binds
+" hexeditor
+" viminfo, sessions and views
+" leader/localleader?
+" https://github.com/inkarkat/vim-mark
+" https://github.com/vim-scripts/star-search
+" indent
+" marks
+
+" https://github.com/Konfekt/FastFold - fix folding
+" https://github.com/svermeulen/vim-easyclip
+" https://github.com/chriskempson/base16/blob/master/styling.md
+" https://github.com/djoshea/vim-autoread
+" https://github.com/tmhedberg/matchit
+" https://github.com/andymass/vim-matchup
+" https://github.com/gregsexton/MatchTag
+" https://github.com/valloric/MatchTagAlways
+" https://github.com/tpope/vim-surround
+" https://github.com/Townk/vim-autoclose
+" https://github.com/jiangmiao/auto-pairs
+" https://github.com/alvan/vim-closetag
+" https://github.com/vim-jp/autofmt/blob/master/autoload/autofmt/compat.vim
+" http://vim.wikia.com/wiki/Use_Vim_like_an_IDE
+
 " }}}
