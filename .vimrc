@@ -172,3 +172,149 @@ set cmdheight=1 cmdwinheight=6
 set wildmenu wildmode=longest:full,full wildignorecase
 set wildignore= suffixes=
 " }}}
+" LINES {{{
+" s:fname() {{{
+function! s:fname(short, ...) abort
+	let bufnr = a:0 > 0 ? a:1 : bufnr('%')
+	if empty(expand('#'.bufnr))
+		return '[No Name]'
+	elseif !a:short
+		return expand('#'.bufnr)
+	endif
+	let fname = ''
+	let expr = '#'.bufnr
+	while expand(expr) != expand(expr.':h')
+		let tail = expand(expr.':t')
+		let sep = expand(expr)[:-(len(tail) + 1)][-1:]
+		let fname = sep . tail[0:(tail[0] == '.')] . fname
+		let expr .= ':h'
+	endwhile
+	return expand(expr)[0:-2] . fname
+endfunction
+" }}}
+" Statusline() {{{
+function! StlMode() abort
+	return get({
+	\	'v': 'VISUAL', 'V': 'V-LINE', "\<c-v>": 'V-BLCK',
+	\	's': 'SELECT', 'S': 'S-LINE', "\<c-s>": 'S-BLCK',
+	\	'i': 'INSERT', 'R': 'RPLACE', 'Rv': 'R-VIRT'
+	\ }, mode(1), 'NORMAL')
+endfunction
+
+function! StlFname() abort
+	return s:fname(get(b:, 'stl_fname_short')) .
+	\      (&mod ? ' [+]' : &ro || !&ma ? ' [-]' : '')
+endfunction
+
+function! StlFinfo() abort
+	let ff = get({'dos': 'CRLF', 'unix': 'LF', 'mac': 'CR'}, &ff)
+	let sw = (!&sta && &sts > 0) ? &sts :
+	\        ((&sta || &sts < 0) && &sw) ? &sw : &ts
+	let fi = (&et ? 'spc' : sw != &ts ? 'mix' : 'tab').':'.sw .
+	\        (!&et && sw != &ts ? '/'.&ts : '')
+	return &fenc.'['.ff.'] '.fi
+endfunction
+
+function! StlRuler() abort
+	return repeat(' ', strwidth(line('$')) - strwidth(line('.'))) .
+	\      line('.').'/'.line('$').' ' .
+	\      repeat(' ', 3 - strwidth(virtcol('.'))).virtcol('.')
+endfunction
+
+function! Statusline() abort
+	let s:mode = get({
+	\	'v': 'Visual', 'V': 'Visual', "\<c-v>": 'Visual',
+	\	's': 'Visual', 'S': 'Visual', "\<c-s>": 'Visual',
+	\	'i': 'Insert', 'R': 'Replace', 'Rv': 'Replace'
+	\ }, mode(1), 'Normal')
+	function! s:module(hi, val, ...) abort
+		let ncval = a:0 > 0 ? a:1 : a:val
+		return '%#StatusLine'.s:mode.a:hi.'#' .
+		\      '%{winnr() != '.winnr().' ? "" : ('.a:val.')}' .
+		\      '%*%{winnr() == '.winnr().' ? "" : ('.ncval.')}'
+	endfunction
+	return s:module(1, '"  ".StlMode()." "', '"  ------ "') .
+	\      '%<' . s:module(3, '"  ".StlFname()') .
+	\      '%=' . s:module(3, '"  ".&ft." "') .
+	\      s:module(2, '"  ".StlFinfo()." "') .
+	\      s:module(1, '"  ".StlRuler()." "')
+endfunction
+" }}}
+" Tabline() {{{
+function! Tabline() abort
+	let bufnr = buflisted(bufnr('%')) ? bufnr('%') : bufnr('#')
+	let fname = s:fname(get(g:, 'tal_fname_short'), bufnr)
+	let bufs = '%#TabLineSel# '.fname.' %#TabLine#'
+	let size = &columns - 16 - strwidth(fname)
+	let lbuf = bufnr
+	let rbuf = bufnr
+	let lbarr = ''
+	let rbarr = ''
+	while lbuf > 0 || rbuf <= bufnr('$')
+		let lbuf -= 1
+		while lbuf > 0 && !buflisted(lbuf)
+			let lbuf -= 1
+		endwhile
+		let fname = s:fname(get(g:, 'tal_fname_short'), lbuf)
+		if lbuf > 0
+			if strwidth(fname) + 3 <= size
+				let bufs = ' '.fname.' |' . bufs
+				let size -= strwidth(fname) + 3
+			else
+				let lbuf = 0
+				let lbarr = '<'
+			endif
+		endif
+		let rbuf += 1
+		while rbuf <= bufnr('$') && !buflisted(rbuf)
+			let rbuf += 1
+		endwhile
+		let fname = s:fname(get(g:, 'tal_fname_short'), rbuf)
+		if rbuf <= bufnr('$')
+			if strwidth(fname) + 3 <= size
+				let bufs .= '| '.fname.' '
+				let size -= strwidth(fname) + 3
+			else
+				let rbuf = bufnr('$')
+				let rbarr = '>'
+			endif
+		endif
+	endwhile
+
+	let tabs = '%#TabLineSel# '.tabpagenr().' %#TabLine#'
+	let size = 7 - strwidth(tabpagenr())
+	let ltab = tabpagenr()
+	let rtab = tabpagenr()
+	let ltarr = ''
+	let rtarr = ''
+	while ltab > 0 || rtab <= tabpagenr('$')
+		let ltab -= 1
+		if ltab > 0
+			if strwidth(ltab) + 2 <= size
+				let tabs = ' '.ltab.' ' . tabs
+				let size -= strwidth(ltab) + 2
+			else
+				let ltab = 0
+				let ltarr = '<'
+			endif
+		endif
+		let rtab += 1
+		if rtab <= tabpagenr('$')
+			if strwidth(rtab) + 2 <= size
+				let tabs .= ' '.rtab.' '
+				let size -= strwidth(rtab) + 2
+			else
+				let rtab = tabpagenr('$')
+				let rtarr = '>'
+			endif
+		endif
+	endwhile
+
+	return '%#TabLine#'.lbarr.bufs.rbarr .
+	\      '%#TabLineFill#%=' .
+	\      '%#TabLine#'.ltarr.tabs.rtarr
+endfunction
+" }}}
+set laststatus=2 statusline=%!Statusline()
+set showtabline=2 tabline=%!Tabline()
+" }}}
