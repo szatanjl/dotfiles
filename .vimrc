@@ -393,3 +393,8 @@ autocmd VIMRC InsertLeave *
 \	autocmd! VIMRC_fm
 " }}}
 " }}}
+" INDENT {{{
+set shiftwidth=0 noexpandtab softtabstop=0 tabstop=8 smarttab
+set autoindent copyindent preserveindent noshiftround
+set equalprg= indentkeys= indentexpr= " TODO
+" }}}
