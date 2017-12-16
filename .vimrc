@@ -166,3 +166,9 @@ autocmd VIMRC InsertLeave * match none | autocmd! VIMRC_ww
 " }}}
 " }}}
 " }}}
+" CMD {{{
+set noshowmode noshowcmd
+set cmdheight=1 cmdwinheight=6
+set wildmenu wildmode=longest:full,full wildignorecase
+set wildignore= suffixes=
+" }}}
