@@ -194,4 +194,10 @@ alias s='grep -n -RI'
 alias sc='s --include="*.c"'
 alias sh='s --include="*.h"'
 # }}}
+# jobs {{{
+j() { jobs -l | grep -- "$1"; }
+p() { ps -Af | { head -n 1; grep -- "$1"; }; }
+alias k='kill -s TERM --'
+alias kk='kill -s KILL --'
+# }}}
 # }}}
