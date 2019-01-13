@@ -207,4 +207,7 @@ d() { dirs -lv | grep -- "$1"; }
 # view {{{
 alias v='head -n 1000 --'
 # }}}
+# sudo {{{
+alias sudo='sudo '  # pass aliases over sudo
+# }}}
 # }}}
