@@ -5,3 +5,6 @@ export PATH="$HOME/.local/bin:$PATH"
 export LANG=en_US.UTF-8
 #export TZ=
 export SHELL=/bin/zsh
+export PAGER=less
+
+export LESSHISTFILE=-
