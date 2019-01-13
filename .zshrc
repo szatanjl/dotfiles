@@ -159,4 +159,9 @@ setopt aliases
 alias -- -='cd -'
 alias -- -2='cd -2'
 # }}}
+# ls {{{
+alias ls='ls --color=auto'
+alias l='ls -A'
+alias ll='ls -Al'
+# }}}
 # }}}
