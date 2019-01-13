@@ -155,4 +155,8 @@ bm -
 # }}}
 # ALIASES {{{
 setopt aliases
+# cd {{{
+alias -- -='cd -'
+alias -- -2='cd -2'
+# }}}
 # }}}
