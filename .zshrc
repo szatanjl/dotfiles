@@ -167,4 +167,13 @@ alias ll='ls -Al'
 # du {{{
 ds() { du -sh "$@" | sort -rh; }
 # }}}
+# fs {{{
+alias cp='cp -RPf --'
+alias lh='ln -fL --'
+alias ln='ln -fs --'
+alias mkdir='mkdir -p --'
+alias mv='mv -f --'
+alias rm='rm -Rf --'
+alias rmdir='rmdir --'
+# }}}
 # }}}
