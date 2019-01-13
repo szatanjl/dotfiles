@@ -6,5 +6,7 @@ export LANG=en_US.UTF-8
 #export TZ=
 export SHELL=/bin/zsh
 export PAGER=less
+export EDITOR=vim
+export VISUAL=vim
 
 export LESSHISTFILE=-
