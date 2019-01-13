@@ -200,4 +200,8 @@ p() { ps -Af | { head -n 1; grep -- "$1"; }; }
 alias k='kill -s TERM --'
 alias kk='kill -s KILL --'
 # }}}
+# history {{{
+h() { fc -l 0 | grep -- "$1"; }
+d() { dirs -lv | grep -- "$1"; }
+# }}}
 # }}}
