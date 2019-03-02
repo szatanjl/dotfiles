@@ -28,6 +28,10 @@ xinput set-prop "$dev" 'libinput Accel Speed'                     0.5
 ## Disable while typing
 xinput set-prop "$dev" 'libinput Disable While Typing Enabled'    1
 
+redshift-gtk &
+nm-applet &
+blueman-applet &
+
 dwm-status &
 dwm-wallpaper &
 xcompmgr &
