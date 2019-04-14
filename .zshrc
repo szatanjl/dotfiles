@@ -176,4 +176,11 @@ alias mv='mv -f --'
 alias rm='rm -Rf --'
 alias rmdir='rmdir --'
 # }}}
+# archive {{{
+alias x='unpack'
+alias z='pack'
+
+compdef _files unpack
+compdef _files pack
+# }}}
 # }}}
