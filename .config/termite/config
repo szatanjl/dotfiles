@@ -1,0 +1,51 @@
+# Termite configuration.  See termite.config(5) for details.
+
+[options]
+font = monospace 9
+allow_bold = true
+bold_is_bright = true
+cell_height_scale = 1.0
+cell_width_scale = 1.0
+
+cursor_blink = on
+cursor_shape = block
+
+scrollback_lines = -1
+scrollbar = off
+scroll_on_output = false
+scroll_on_keystroke = true
+
+audible_bell = false
+urgent_on_bell = false
+
+dynamic_title = true
+mouse_autohide = true
+size_hints = true
+fullscreen = false
+
+clickable_url = false
+search_wrap = false
+
+# no option to set double click :(
+# those chars should be part of a word: -A-Za-z0-9!@#$%^&_+./
+# no option to turn off blinking text :(
+
+[colors]
+foreground = #eeeeee
+background = rgba(0, 0, 0, 0.75)
+color0 = #000000
+color1 = #cc0000
+color2 = #4e9a06
+color3 = #c4a000
+color4 = #3465a4
+color5 = #75507b
+color6 = #06989a
+color7 = #d3d7cf
+color8 = #555753
+color9 = #ef2929
+color10 = #8ae234
+color11 = #fce94f
+color12 = #739fcf
+color13 = #ad7fa8
+color14 = #34e2e2
+color15 = #eeeeee
