@@ -1,0 +1,5 @@
+[includeIf "gitdir:~/projects/"]
+	path = users/projects
+
+[tig]
+	history-size = 0
