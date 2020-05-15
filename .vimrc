@@ -6,15 +6,16 @@ augroup VIMRC
 	autocmd!
 augroup END
 " }}}
-" BACKUP {{{
-set nobackup writebackup backupdir=~/.vim/backup// backupext=~ backupskip=/tmp/*
-set noswapfile directory=~/.vim/swap// updatecount=200 updatetime=4000
-set undofile undodir=~/.vim/undo// undolevels=1000 undoreload=10000
-set viewdir=~/.vim/view// viewoptions=cursor,folds,options
-set sessionoptions=blank,buffers,curdir,folds,options,tabpages,winsize
-set viminfo='100,s0,h,n~/.vim/info history=100
+" UI {{{
+" TUI {{{
+set nolazyredraw fillchars=vert:\|,diff:-
 " }}}
-" HIGHLIGHT {{{ TODO light bg / 16 colors
+" GUI {{{
+" }}}
+" COLORSCHEME {{{
+set background=dark
+" }}}
+" THEME {{{
 " s:hi() {{{
 function! s:hi(name, style, fg, bg) abort
 	function! s:gui(color) abort
@@ -173,7 +174,13 @@ set cmdheight=1 cmdwinheight=6
 set wildmenu wildmode=longest:full,full wildignorecase
 set wildignore= suffixes=
 " }}}
+" WINDOWS {{{
+set winheight=24 winminheight=1 winwidth=96 winminwidth=1
+set splitbelow splitright
+" }}}
 " LINES {{{
+set laststatus=2 statusline=%!Statusline()
+set showtabline=2 tabline=%!Tabline()
 " s:fname() {{{
 function! s:fname(short, ...) abort
 	let bufnr = a:0 > 0 ? a:1 : bufnr('%')
@@ -316,36 +323,72 @@ function! Tabline() abort
 	\      '%#TabLine#'.ltarr.tabs.rtarr
 endfunction
 " }}}
-set laststatus=2 statusline=%!Statusline()
-set showtabline=2 tabline=%!Tabline()
-" }}}
-" BUFFERS {{{
-set noautochdir nomodeline noautoread
-set write nowriteany noautowrite noautowriteall confirm hidden
-" }}}
-" WINDOWS {{{
-set winheight=24 winminheight=1 winwidth=96 winminwidth=1
-set splitbelow splitright
-" }}}
-" MOVEMENT {{{
-set scrolljump=1 scrolloff=0 sidescroll=1 sidescrolloff=1
-set whichwrap=<,>,[,] backspace=indent,eol,start virtualedit=block
-set selection=inclusive
-" }}}
-" SEARCH {{{
-set noshowmatch matchtime=5 matchpairs=(:),{:},[:]
-set ignorecase smartcase wrapscan noincsearch hlsearch gdefault
-set grepprg= grepformat= " TODO
 " }}}
 " TEXT {{{
-set number norelativenumber numberwidth=5
+set number norelativenumber numberwidth=6
 set cursorline nocursorcolumn colorcolumn=73,81
 set listchars=tab:\|\ ,trail:~,precedes:<,extends:> list
 set wrap showbreak=~ breakat=\ \	 linebreak
 set breakindent breakindentopt=min:40,shift:4,sbr
 set display=lastline
 " }}}
+" }}}
+" BACKUP {{{
+set nobackup writebackup backupdir=~/.cache/vim/backup// backupext=~ backupskip=/tmp/*
+set noswapfile directory=~/.cache/vim/swap// updatecount=200 updatetime=4000
+set undofile undodir=~/.cache/vim/undo// undolevels=1000 undoreload=10000
+set viewdir=~/.cache/vim/view// viewoptions=cursor,folds,options
+set sessionoptions=blank,buffers,curdir,folds,options,tabpages,winsize
+set viminfo='100,s0,h,n~/.cache/vim/info history=100
+" }}}
+" BUFFERS {{{
+set noautochdir nomodeline noautoread
+set write nowriteany noautowrite noautowriteall confirm hidden
+" }}}
+" SYNTAX {{{
+syntax on
+" }}}
+" SEARCH {{{
+set ignorecase smartcase wrapscan noincsearch hlsearch gdefault
+set grepprg= grepformat= " TODO
+" }}}
+" MATCH {{{
+set noshowmatch matchtime=5 matchpairs=(:),{:},[:]
+" Match() {{{
+function! Match(count, mode) abort
+	if a:mode == 'v'
+		let tmp = @@
+		normal! gvy
+		let str = @@
+		let @@ = tmp
+	elseif a:mode == 'w'
+		let str = expand('<cword>')
+	else
+		let str = ''
+	endif
+	let pattern = substitute(escape(str, '\'), '\n', '\\n', 'g')
+	if a:mode != 'v' && str =~ '\<'
+		let pattern = '\<' . pattern . '\>'
+	endif
+	if a:count > 0
+		silent! call matchdelete(100 + a:count)
+		if !empty(str)
+			call matchadd('Search'.a:count, '\V' . pattern, -a:count, 100 + a:count)
+		endif
+	else
+		let @/ = ''
+		if !empty(str)
+			let @/ = '\V' . pattern
+		endif
+	endif
+endfunction
+" }}}
+" }}}
 " FOLD {{{
+set foldenable foldtext=Foldtext() foldcolumn=0
+set foldopen=insert,mark,quickfix,tag,undo foldclose=
+set foldmethod=marker foldlevelstart=0 foldminlines=1
+set foldmarker={{{,}}} foldignore= foldexpr=
 " Foldtext() {{{
 function! Foldtext() abort
 	for i in range(v:foldstart, v:foldend)
@@ -361,47 +404,41 @@ function! Foldtext() abort
 	return repeat(' ', indent(v:foldstart)) . line . ' ... '
 endfunction
 " }}}
-set foldenable foldtext=Foldtext() foldcolumn=0
-set foldopen=insert,mark,quickfix,tag,undo foldclose=
-set foldmethod=marker foldlevelstart=0 foldminlines=1
-set foldmarker={{{,}}} foldignore= foldexpr=
-" Dont screw up folds when typing in insert mode {{{
-augroup VIMRC_fm
-	autocmd!
-augroup END
-
-autocmd VIMRC InsertEnter *
-\	if !exists('w:VIMRC_lfm') |
-\		let w:VIMRC_lfm=&foldmethod |
-\		set foldmethod=manual |
-\	endif |
-\	autocmd VIMRC_fm WinEnter *
-\		if !exists('w:VIMRC_lfm') |
-\			let w:VIMRC_lfm=&foldmethod |
-\			set foldmethod=manual |
-\		endif
-
-autocmd VIMRC WinLeave *
-\	if exists('w:VIMRC_lfm') |
-\		let &foldmethod = w:VIMRC_lfm |
-\		unlet w:VIMRC_lfm |
-\	endif
-autocmd VIMRC InsertLeave *
-\	if exists('w:VIMRC_lfm') |
-\		let &foldmethod = w:VIMRC_lfm |
-\		unlet w:VIMRC_lfm |
-\	endif |
-\	autocmd! VIMRC_fm
+" FoldUpdate() {{{
+function! FoldUpdate() abort
+	if exists('w:foldmethod')
+		let &l:foldmethod = w:foldmethod
+		redraw
+		setlocal foldmethod=manual
+	endif
+endfunction
 " }}}
 " }}}
 " INDENT {{{
 set shiftwidth=0 noexpandtab softtabstop=0 tabstop=8 smarttab
 set autoindent copyindent preserveindent noshiftround
 set equalprg= indentkeys= indentexpr= " TODO
+" Indent() {{{
+function! Indent(count) abort
+	let sep = !empty(getline('.')) && (a:count > 0 || getline('.')[0] == "\t")
+	if sep
+		call setline('.', substitute(getline('.'), '^\t*', '&_', ''))
+	endif
+	if a:count > 0
+		>
+	else
+		<
+	endif
+	if sep
+		call setline('.', substitute(getline('.'), '_', '', ''))
+	endif
+endfunction
 " }}}
-" FORMATTING {{{ formatoptions(wa)
+" }}}
+" FORMAT {{{ formatoptions(wa)
 set textwidth=72 formatoptions=roqn1j joinspaces cpoptions+=J
 set formatlistpat=^\\s*\\([*+-]\\\|\\w\\+[.:)]\\)\\s*
+" set formatlistpat=\\([^\ ]\ \\n\\)\\@<!\\_^\\s*\\([*+-]\\\|\\w\\+[.:)]\\)\\s*
 set formatprg= formatexpr= " TODO
 " }}}
 " DIFF {{{ diffopt(iwhite)
@@ -411,6 +448,12 @@ if &diff
 	set nocursorline
 endif
 " }}}
+" MOVEMENT {{{
+set scrolljump=1 scrolloff=0 sidescroll=1 sidescrolloff=1
+set whichwrap=<,>,[,] backspace=indent,eol,start virtualedit=block
+set selection=inclusive
+" }}}
+" BINDS {{{
 " FUNCTIONS {{{
 function! ToggleStlFname() abort
 	let b:stl_fname_short = 1 - get(b:, 'stl_fname_short')
@@ -424,14 +467,6 @@ endfunction
 
 function! ToggleMatchCase() abort
 	let b:matchcase = 1 - get(b:, 'matchcase')
-endfunction
-
-function! ToggleFoldMethod() abort
-	if &fdm == 'syntax'
-		setlocal foldmethod=marker
-	else
-		setlocal foldmethod=syntax
-	endif
 endfunction
 
 function! ToggleIndent() abort
@@ -478,8 +513,24 @@ function! ClearTrailingWhitespace(keep_joinspaces) abort
 		call setline('.', substitute(line, '\s\+$', '', ''))
 	endif
 endfunction
+
+function! FoldToggle() abort
+	if exists('w:foldmethod')
+		if w:foldmethod == 'marker'
+			let w:foldmethod = 'syntax'
+		else
+			let w:foldmethod = 'marker'
+		endif
+	else
+		if &l:foldmethod == 'marker'
+			setlocal foldmethod=syntax
+		else
+			setlocal foldmethod=marker
+		endif
+	endif
+	call FoldUpdate()
+endfunction
 " }}}
-" BINDS {{{
 set tildeop nostartofline nrformats=alpha,hex
 set notimeout ttimeout timeoutlen=1000 ttimeoutlen=0
 
@@ -534,15 +585,23 @@ nnoremap N Nzz
 " / search with matchcase (\C) turned on depending on local option
 noremap / /<c-r>=(get(b:, 'matchcase') ? '\C' : '')<cr>
 
-" [count]* highlight word [count]# clear highlight TODO
-noremap <silent> * *<c-o>
-noremap <silent> # :<c-u>nohlsearch<cr>
+" [count]* highlight word [count]# clear highlight
+nnoremap <silent> * :<c-u>call Match(v:count, "w") \| let &hls = &hls<cr>
+xnoremap <silent> * :<c-u>call Match(v:count, "v") \| let &hls = &hls<cr>
+nnoremap <silent> # :<c-u>call Match(v:count, "")<cr>
+
+" CTRL-F refresh syntax and folds
+nnoremap <silent> <c-f> :syntax sync fromstart<cr>:call FoldUpdate()<cr>
 
 " SPACE toggle fold ,SPACE focus
-nnoremap <silent> <space> @=(&fdm == 'syntax' ? 'zA' : 'za')<cr>
-nnoremap ,<space> zM@=(&fdm == 'syntax' ? 'zO' : 'zv')<cr>zz
+nnoremap <silent> <space> :normal! <c-r>=(get(w:, 'foldmethod', &foldmethod) == 'syntax' ? 'zA' : 'za')<cr><cr>
+nnoremap <silent> ,<space> :normal! zM<c-r>=(get(w:, 'foldmethod', &foldmethod) == 'syntax' ? 'zO' : 'zv')<cr>zz<cr>
 
-" TODO >> <<
+" < > shift indent left/right
+nnoremap <silent> < :call Indent(-1)<cr>
+xnoremap <silent> < :call Indent(-1)<cr>gv
+nnoremap <silent> > :call Indent(+1)<cr>
+xnoremap <silent> > :call Indent(+1)<cr>gv
 
 " ? substitute
 noremap ? :<c-r>=('%'[!empty(getcmdline())])<cr>s/<c-r>=(get(b:, 'matchcase') ? '\C' : '')<cr>
@@ -563,6 +622,7 @@ vnoremap <silent> ,j
 nnoremap <silent> ,J :<c-u>call Split()<cr>
 
 " ,w/,W clear trailing whitespace
+noremap <silent> ,w :<c-r>=('%'[!empty(getcmdline())])<cr>s/\s*$//e
 noremap <silent> ,w
 \	:<c-r>=('%'[!empty(getcmdline())])<cr>
 \	 call ClearTrailingWhitespace(1) \|
@@ -596,7 +656,25 @@ nnoremap <silent> \i :<c-u>call ToggleIndent()<cr>
 " s:ft_* {{{ TODO
 function! s:ft_c() abort
 	let b:matchcase=1
-	setlocal foldmethod=syntax
+	let w:foldmethod='syntax'
+	setlocal shiftwidth=0 noexpandtab
+endfunction
+
+function! s:ft_cpp() abort
+	let b:matchcase=1
+	let w:foldmethod='syntax'
+	setlocal shiftwidth=0 noexpandtab
+endfunction
+
+function! s:ft_sh() abort
+	let b:matchcase=1
+	let w:foldmethod='syntax'
+	setlocal shiftwidth=0 noexpandtab
+endfunction
+
+function! s:ft_vim() abort
+	let b:matchcase=1
+	let w:foldmethod='marker'
 	setlocal shiftwidth=0 noexpandtab
 endfunction
 " }}}
@@ -605,6 +683,7 @@ autocmd VIMRC FileType *
 \		let b:VIMRC_ft = &ft |
 \		if exists('*s:ft_' . &ft) |
 \			call s:ft_{&ft}() |
+\			call FoldUpdate() |
 \		endif |
 \	endif
 " }}}
@@ -614,8 +693,7 @@ autocmd VIMRC FileType *
 " TODO ... check what is exactly the speed without lazyredraw and why cursorline slows down the vim
 " TODO ... check the speed with plain vim and with my .vimrc w/o cursorline and speed up if necessary
 " TODO ... trim trailing whitespace better? <https://www.youtube.com/watch?v=cTBgtN-s2Zw>
-" set lazyredraw
-set fillchars=vert:\|,diff:-
+" TODO ... hexediting https://github.com/d0c-s4vage/pfp-vim
 
 autocmd VIMRC BufReadPost *
 \	if line("'\"") > 0 && line("'\"") <= line('$') |
@@ -626,20 +704,14 @@ autocmd VIMRC BufReadPost *
 \		endif |
 \	endif
 
-nnoremap <silent> <c-f> :syntax sync fromstart<cr>
-
 " w, e, b are free for binds
 " backup should create directiores if they do not exist
 " diff binds
 " hexeditor
 " viminfo, sessions and views
 " leader/localleader?
-" https://github.com/inkarkat/vim-mark
-" https://github.com/vim-scripts/star-search
-" indent
 " marks
 
-" https://github.com/Konfekt/FastFold - fix folding
 " https://github.com/svermeulen/vim-easyclip
 " https://github.com/chriskempson/base16/blob/master/styling.md
 " https://github.com/djoshea/vim-autoread
