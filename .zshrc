@@ -164,4 +164,7 @@ alias ls='ls --color=auto'
 alias l='ls -A'
 alias ll='ls -Al'
 # }}}
+# du {{{
+ds() { du -sh "$@" | sort -rh; }
+# }}}
 # }}}
