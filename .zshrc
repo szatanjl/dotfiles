@@ -204,4 +204,7 @@ alias kk='kill -s KILL --'
 h() { fc -l 0 | grep -- "$1"; }
 d() { dirs -lv | grep -- "$1"; }
 # }}}
+# view {{{
+alias v='head -n 1000 --'
+# }}}
 # }}}
