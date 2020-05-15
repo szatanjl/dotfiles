@@ -8,5 +8,6 @@ export SHELL=/bin/zsh
 export PAGER=less
 export EDITOR=vim
 export VISUAL=vim
+export BROWSER=firefox
 
 export LESSHISTFILE=-
