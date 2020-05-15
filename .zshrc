@@ -286,4 +286,7 @@ alias lc='ledg -VX PLN "^assets" "^debts"'
 alias p0='picocom -s "sb -vv" -b 115200 /dev/ttyUSB0'
 alias p1='picocom -s "sb -vv" -b 921600 /dev/ttyUSB0'
 # }}}
+# record {{{
+alias record='ffmpeg -f x11grab -r 30 -s 1920x1080 -i :0.0 -f alsa -i default -c:v libx264 -crf 0 -c:a flac'
+# }}}
 # }}}
