@@ -1,0 +1,10 @@
+#!/bin/sh -euf
+
+browser="${BROWSER:-xdg-open}"
+url="${1-}"
+
+case "$url" in
+	*youtube*) browser='mpv --fullscreen --speed=1.5 --ytdl-format=bestvideo[height<=?1080][fps<=?30][vcodec!=?vp9]+bestaudio/best' ;;
+esac
+
+exec $browser "$url"

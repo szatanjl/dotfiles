@@ -1,0 +1,38 @@
+auto-reload yes
+reload-time 60
+prepopulate-query-feeds yes
+goto-first-unread no
+browser "~/.config/newsboat/browser"
+error-log "~/.local/share/newsboat/error.log"
+
+feedlist-format          "%4i %n %11u %t"
+articlelist-format       "%4i %f %D  %?T?|%-40T|  ?%t"
+feedlist-title-format    "Feeds: %u unread, %t total %?T?(tag %T)?"
+articlelist-title-format "%T: %u unread, %t total (%U)"
+itemview-title-format    "%T"
+datetime-format          "%Y-%m-%d"
+text-width 72
+show-keymap-hint no
+
+color listnormal        color248 default
+color listnormal_unread default  default
+color listfocus         color248 color238
+color listfocus_unread  default  color238
+color info              default  color235
+
+highlight feedlist ".*--.*"                          green default bold
+highlight article  "^(Feed|Title|Author|Date|Link):" green default bold
+highlight article  "^(Links|Podcast Download URL):"  green default bold
+highlight article  "https?://[^ ]+"                  color248 default
+
+bind-key h quit
+bind-key j down
+bind-key k up
+bind-key l open
+bind-key J pagedown
+bind-key K pageup
+bind-key g home
+bind-key G end
+bind-key f show-urls
+bind-key u toggle-show-read-feeds
+bind-key SPACE toggle-article-read
