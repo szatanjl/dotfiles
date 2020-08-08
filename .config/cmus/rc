@@ -1,0 +1,6 @@
+# OPTIONS {{{
+set continue=true
+set repeat=true
+set shuffle=true
+set replaygain=track
+# }}}
