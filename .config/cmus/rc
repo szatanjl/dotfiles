@@ -36,3 +36,44 @@ set color_win_inactive_cur_sel_fg=yellow
 set color_info=default
 set color_error=red
 # }}}
+# KEYBINDS {{{
+bind -f common q     quit
+bind -f common tab   win-next
+bind -f common space win-toggle
+bind -f common enter win-activate
+bind -f common f     win-sel-cur
+
+bind -f common j     win-down
+bind -f common k     win-up
+bind -f common J     win-half-page-down
+bind -f common K     win-half-page-up
+bind -f common g     win-top
+bind -f common G     win-bottom
+
+bind -f common /     search-start
+bind -f common n     search-next
+bind -f common N     search-prev
+
+bind -f common r     clear -l
+bind -f common R     clear -q
+bind -f common d     win-remove
+bind -f common a     win-add-l
+bind -f common A     add ~/music
+bind -f common y     win-add-q
+bind -f common Y     win-add-Q
+bind -f common p     win-mv-after
+bind -f common P     win-mv-before
+
+bind -f common u     player-prev
+bind -f common i     player-pause
+bind -f common o     player-next
+
+bind -f common up    vol +5%
+bind -f common down  vol -5%
+bind -f common left  seek -5
+bind -f common right seek +5
+
+bind -f common 1 view tree
+bind -f common 2 view playlist
+bind -f common 3 view queue
+# }}}
