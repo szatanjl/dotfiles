@@ -274,4 +274,12 @@ alias ggc='git -c gc.reflogExpire=0 -c gc.reflogExpireUnreachable=0 \
 # blame bisect clean clone cherry-pick describe stash tag submodule
 # TODO git log --follow -L<n,m:file> -- <file>
 # }}}
+# ledger {{{
+alias ledg='cat ~/docs/documents/ledger/20*/* | ledger --pedantic -f ~/docs/documents/ledger/accounts -f - balance'
+alias lb='ledg -B'
+alias la='ledg -B "^assets" "^debts"'
+alias lf='ledg -B "^income" "^expenses"'
+alias lp='ledg -BX PLN "^assets" "^debts"'
+alias lc='ledg -VX PLN "^assets" "^debts"'
+# }}}
 # }}}
