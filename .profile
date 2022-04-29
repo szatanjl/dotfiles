@@ -11,3 +11,4 @@ export VISUAL=vim
 export BROWSER=chromium
 
 export LESSHISTFILE=-
+export _JAVA_AWT_WM_NONREPARENTING=1
