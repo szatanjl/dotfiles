@@ -1,5 +1,20 @@
 [includeIf "gitdir:~/projects/"]
 	path = users/projects
+[includeIf "gitdir:~/docs/"]
+	path = users/docs
+[includeIf "gitdir:~/img/"]
+	path = users/docs
 
 [tig]
 	history-size = 0
+
+[safe]
+	directory = /mnt/docs/docs/contracts.git
+[safe]
+	directory = /mnt/docs/docs/finances.git
+[safe]
+	directory = /mnt/docs/docs/id.git
+[safe]
+	directory = /mnt/docs/docs/ledger.git
+[safe]
+	directory = /mnt/docs/docs/medical.git

@@ -5,7 +5,7 @@ export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;
 # DATADIR {{{
 if [ -n "${XDG_DATA_HOME-}" ] || [ -n "${HOME-}" ]; then
 	DATADIR="${XDG_DATA_HOME:-$HOME/.local/share}/zsh"
-	mkdir -p -- "$DATADIR"
+	\mkdir -p -- "$DATADIR"
 fi
 # }}}
 # }}}
@@ -263,7 +263,7 @@ alias gcpa='git cherry-pick --abort'
 alias gcpc='git cherry-pick --continue'
 
 alias gr='git rebase'
-alias gri='git rebase --interactive --autostash'
+alias gri='git rebase --interactive --autostash --committer-date-is-author-date'
 alias gra='git rebase --abort'
 alias grc='git rebase --continue'
 
@@ -275,12 +275,14 @@ alias ggc='git -c gc.reflogExpire=0 -c gc.reflogExpireUnreachable=0 \
 # TODO git log --follow -L<n,m:file> -- <file>
 # }}}
 # ledger {{{
-alias ledg='cat ~/docs/documents/ledger/20*/* | ledger --pedantic -f ~/docs/documents/ledger/accounts -f - balance'
-alias lb='ledg -B'
-alias la='ledg -B "^assets" "^debts"'
-alias lf='ledg -B "^income" "^expenses"'
-alias lp='ledg -BX PLN "^assets" "^debts"'
-alias lc='ledg -VX PLN "^assets" "^debts"'
+alias ledg='cat *.prices.ldg *.ledger.ldg | ledger --pedantic --check-payees -f *.accounts.ldg -f - balance'
+alias ledg_assets='ledg \( "^assets" and not ":business:" \) or "^debts"'
+alias ledg_pln='ledg_assets -X PLN'
+alias ledg_eur='ledg_assets -X EUR'
+alias ledg_iwda='ledg_assets -X IWDA'
+
+alias ldg='ledg "^assets" "^debts"'
+alias ldga='ledg_assets; echo; ledg_pln; echo; ledg_eur; echo; ledg_iwda'
 # }}}
 # picocom {{{
 alias p0='picocom -s "sb -vv" -b 115200 /dev/ttyUSB0'
