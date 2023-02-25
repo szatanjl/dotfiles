@@ -652,6 +652,23 @@ nnoremap <silent> \f :<c-u>call ToggleFoldMethod()<cr>
 " \i toggle indent between tabs, 4 spaces and 2 spaces
 nnoremap <silent> \i :<c-u>call ToggleIndent()<cr>
 " }}}
+" Netrw {{{
+let g:loaded_netrwPlugin = 1
+" }}}
+" YCM {{{
+set completeopt=menu,menuone
+let g:ycm_filetype_whitelist = { '*': 1, 'ycm_nofiletype': 1 }
+let g:ycm_auto_hover = ''
+let g:ycm_min_num_of_chars_for_completion = 1
+let g:ycm_complete_in_comments = 1
+let g:ycm_complete_in_strings = 1
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g_ycm_global_ycm_extra_conf = '~/.config/ycm_extra_conf.py'
+
+nmap <F10> <plug>(YCMHover)
+nnoremap <silent> <F11> :<c-u>YcmCompleter GoToReferences<cr>
+nnoremap <silent> <F12> :<c-u>YcmCompleter GoTo<cr>
+" }}}
 " FILETYPES {{{
 " s:ft_* {{{ TODO
 function! s:ft_c() abort

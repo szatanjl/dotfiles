@@ -160,7 +160,7 @@ alias -- -='cd -'
 alias -- -2='cd -2'
 # }}}
 # ls {{{
-alias ls='ls --color=auto'
+alias ls='ls --color=auto --group-directories-first -v'
 alias l='ls -A'
 alias ll='ls -Al'
 # }}}
@@ -271,8 +271,20 @@ alias ggc='git -c gc.reflogExpire=0 -c gc.reflogExpireUnreachable=0 \
                -c gc.rerereresolved=0 -c gc.rerereunresolved=0 \
                gc --prune=now'
 
+alias gx='mv .git/objects/pack/pack-* . && \
+          git unpack-objects < pack-*.pack && \
+          rm -f pack-*.*'
+
 # blame bisect clean clone cherry-pick describe stash tag submodule
 # TODO git log --follow -L<n,m:file> -- <file>
+# }}}
+# docker {{{
+alias dl='docker images'
+alias dll='docker images -a'
+alias dc='docker container ls -a'
+alias dp='docker ps'
+alias dk='docker kill'
+alias dgc='docker system prune -af'
 # }}}
 # ledger {{{
 alias ledg='cat *.prices.ldg *.ledger.ldg | ledger --pedantic --check-payees -f *.accounts.ldg -f - balance'
