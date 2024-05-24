@@ -160,7 +160,7 @@ alias -- -='cd -'
 alias -- -2='cd -2'
 # }}}
 # ls {{{
-alias ls='ls --color=auto --group-directories-first -v'
+alias ls='ls --color=auto --group-directories-first'
 alias l='ls -A'
 alias ll='ls -Al'
 # }}}
@@ -169,6 +169,7 @@ ds() { du -sh "$@" | sort -rh; }
 # }}}
 # fs {{{
 alias cp='cp -RPf --'
+alias cpr='rsync -ahh --info=progress2 --partial-dir=.rsync --'
 alias lh='ln -fL --'
 alias ln='ln -fs --'
 alias mkdir='mkdir -p --'
@@ -306,5 +307,9 @@ alias record='ffmpeg -f x11grab -r 30 -s 1920x1080 -i :0.0 -f alsa -i default -c
 # monitor {{{
 alias mc='xrandr --output HDMI1 --same-as eDP1 --auto && pacmd set-default-sink alsa_output.pci-0000_00_03.0.hdmi-stereo-extra1'
 alias md='xrandr --output HDMI1 --off && pacmd set-default-sink alsa_output.pci-0000_00_1b.0.analog-stereo'
+# }}}
+# ffmpeg {{{
+video_downscale() { ffmpeg -i "$1" -c:v libx265 -c:a copy -s 1920x1080 -r 30 "$2"; }
+video_downscale_pion() { ffmpeg -i "$1" -c:v libx265 -c:a copy -s 1080x1920 -r 30 "$2"; }
 # }}}
 # }}}
