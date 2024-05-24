@@ -694,6 +694,18 @@ function! s:ft_vim() abort
 	let w:foldmethod='marker'
 	setlocal shiftwidth=0 noexpandtab
 endfunction
+
+function! s:ft_yaml() abort
+	let b:matchcase=1
+	let w:foldmethod='indent'
+	setlocal shiftwidth=2 expandtab
+endfunction
+
+function! s:ft_ledger() abort
+	let b:matchcase=0
+	let w:foldmethod='marker'
+	setlocal shiftwidth=4 expandtab
+endfunction
 " }}}
 autocmd VIMRC FileType *
 \	if get(b:, 'VIMRC_ft', '') != &ft |
