@@ -1,0 +1,66 @@
+# Alacritty configuration
+
+[selection]
+semantic_escape_chars = "\t \"'` ()[]{}<> ,:;= \\|"
+
+[scrolling]
+history = 100000
+multiplier = 5
+
+[window]
+dimensions = { columns = 80, lines = 24 }
+padding = { x = 1, y = 1 }
+opacity = 0.75
+
+[env]
+WINIT_X11_SCALE_FACTOR = "1"
+
+[font]
+size = 9
+
+[cursor]
+style = { shape = "Block", blinking = "On" }
+blink_interval = 500
+
+[mouse]
+hide_when_typing = true
+
+[keyboard]
+bindings = [
+{ mode = "Vi", key = "Q", action = "ToggleViMode" },
+{ mode = "Vi", mods = "Shift", key = "J", action = "ScrollHalfPageDown" },
+{ mode = "Vi", mods = "Shift", key = "K", action = "ScrollHalfPageUp" },
+{ mode = "Vi", mods = "Shift", key = "H", action = "SemanticLeft" },
+{ mode = "Vi", mods = "Shift", key = "L", action = "SemanticRight" },
+{ mode = "Vi", mods = "Control", key = "A", action = "FirstOccupied" },
+{ mode = "Vi", mods = "Control", key = "E", action = "Last" },
+{ mode = "Vi", key = "P", action = "Paste" },
+]
+
+[colors]
+draw_bold_text_with_bright_colors = true
+primary = { foreground = "#eeeeee", background = "#000000" }
+
+[colors.search]
+matches = { foreground = "#000000", background = "#ffff00" }
+focused_match = { foreground = "#000000", background = "#d78700" }
+
+[colors.normal]
+black   = "#000000"
+red     = "#cc0000"
+green   = "#4e9a06"
+yellow  = "#c4a000"
+blue    = "#3465a4"
+magenta = "#75507b"
+cyan    = "#06989a"
+white   = "#d3d7cf"
+
+[colors.bright]
+black   = "#555753"
+red     = "#ef2929"
+green   = "#8ae234"
+yellow  = "#fce94f"
+blue    = "#739fcf"
+magenta = "#ad7fa8"
+cyan    = "#34e2e2"
+white   = "#eeeeee"
