@@ -12,6 +12,7 @@ export BROWSER=firefox
 
 export LESSHISTFILE=-
 export _JAVA_AWT_WM_NONREPARENTING=1
+export CALCHISTFILE=.local/share/calc/history
 
 if [ -z "${DISPLAY-}" ] && [ "$(tty)" = /dev/tty1 ]; then
 	exec startx
