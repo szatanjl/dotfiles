@@ -8,7 +8,7 @@ augroup END
 " }}}
 " UI {{{
 " TUI {{{
-set nolazyredraw fillchars=vert:\|,diff:-
+set nolazyredraw fillchars=fold:\ ,vert:\|,diff:-
 " }}}
 " GUI {{{
 " }}}
@@ -663,7 +663,6 @@ let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_complete_in_comments = 1
 let g:ycm_complete_in_strings = 1
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
-let g_ycm_global_ycm_extra_conf = '~/.config/ycm_extra_conf.py'
 
 nmap <F10> <plug>(YCMHover)
 nnoremap <silent> <F11> :<c-u>YcmCompleter GoToReferences<cr>
@@ -704,6 +703,12 @@ endfunction
 function! s:ft_ledger() abort
 	let b:matchcase=0
 	let w:foldmethod='marker'
+	setlocal shiftwidth=4 expandtab
+endfunction
+
+function! s:ft_rust() abort
+	let b:matchcase=1
+	let w:foldmethod='syntax'
 	setlocal shiftwidth=4 expandtab
 endfunction
 " }}}
