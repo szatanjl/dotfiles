@@ -160,12 +160,13 @@ alias -- -='cd -'
 alias -- -2='cd -2'
 # }}}
 # ls {{{
-alias ls='ls --color=auto --group-directories-first'
-alias l='ls -A'
-alias ll='ls -Al'
+alias ls='ls --color --group-directories-first'
+alias l='ls -Av'
+alias ll='ls -Avlh'
+alias lt='tree -av --dirsfirst'
 # }}}
 # du {{{
-ds() { du -sh "$@" | sort -rh; }
+alias ds='dust -r --print-errors'
 # }}}
 # fs {{{
 alias cp='cp -RPf --'
@@ -185,15 +186,13 @@ compdef _files unpack
 compdef _files pack
 # }}}
 # find {{{
-alias f='find . -name'
-alias fd='find -L . -type d -name'
-alias ff='find -L . -type f -name'
+alias f='fd -LH'
+ft() { fd -LH "$@" | tree --fromfile; }
 # }}}
 # grep {{{
-alias grep='grep --color=auto'
-alias s='grep -n -RI'
-alias sc='s --include="*.c"'
-alias sh='s --include="*.h"'
+alias grep='grep --color'
+alias s='rg -Ln. --binary --sort=path'
+alias ss='s --no-ignore'
 # }}}
 # jobs {{{
 j() { jobs -l | grep -- "$1"; }
@@ -206,7 +205,7 @@ h() { fc -l 0 | grep -- "$1"; }
 d() { dirs -lv | grep -- "$1"; }
 # }}}
 # view {{{
-alias v='head -n 1000 --'
+alias v='bat -Pr :50 --style=rule,header,numbers --'
 # }}}
 # sudo {{{
 alias sudo='sudo '  # pass aliases over sudo
@@ -285,7 +284,7 @@ alias dll='docker images -a'
 alias dc='docker container ls -a'
 alias dp='docker ps'
 alias dk='docker kill'
-alias dgc='docker system prune -af'
+alias dgc='docker system prune -af && docker volume prune -a'
 # }}}
 # ledger {{{
 alias ledg='cat *.prices.ldg *.ledger.ldg | ledger --pedantic --check-payees -f *.accounts.ldg -f - balance'
@@ -304,12 +303,13 @@ alias p1='picocom -s "sb -vv" -b 921600 /dev/ttyUSB0'
 # record {{{
 alias record='ffmpeg -f x11grab -r 30 -s 1920x1080 -i :0.0 -f alsa -i default -c:v libx264 -crf 0 -c:a flac'
 # }}}
-# monitor {{{
-alias mc='xrandr --output HDMI1 --same-as eDP1 --auto && pacmd set-default-sink alsa_output.pci-0000_00_03.0.hdmi-stereo-extra1'
-alias md='xrandr --output HDMI1 --off && pacmd set-default-sink alsa_output.pci-0000_00_1b.0.analog-stereo'
-# }}}
 # ffmpeg {{{
 video_downscale() { ffmpeg -i "$1" -c:v libx265 -c:a copy -s 1920x1080 -r 30 "$2"; }
 video_downscale_pion() { ffmpeg -i "$1" -c:v libx265 -c:a copy -s 1080x1920 -r 30 "$2"; }
+# }}}
+# date {{{
+alias cal='cal -my'
+t2d() { date -ud "@$1" '+%Y-%m-%d %H:%M:%S'; }
+d2t() { date -ud "$*" '+%s'; }
 # }}}
 # }}}
