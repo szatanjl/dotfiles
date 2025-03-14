@@ -5,6 +5,16 @@
 [includeIf "gitdir:~/img/"]
 	path = users/img
 
+[init]
+	defaultBranch = main
+[merge]
+	conflictstyle = zdiff3
+[core]
+	pager = delta
+[delta]
+	navigate = true
+	line-numbers = true
+	side-by-side = true
 [tig]
 	history-size = 0
 
@@ -18,5 +28,3 @@
 	directory = /mnt/docs/docs/ledger.git
 [safe]
 	directory = /mnt/docs/docs/medical.git
-[init]
-	defaultBranch = main
