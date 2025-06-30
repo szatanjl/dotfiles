@@ -205,7 +205,7 @@ h() { fc -l 0 | grep -- "$1"; }
 d() { dirs -lv | grep -- "$1"; }
 # }}}
 # view {{{
-alias v='bat -Pr :50 --style=rule,header,numbers --'
+alias v='bat -Pr :50 --style=rule,header,numbers --tabs 8 --'
 # }}}
 # sudo {{{
 alias sudo='sudo '  # pass aliases over sudo
@@ -311,5 +311,8 @@ video_downscale_pion() { ffmpeg -i "$1" -c:v libx265 -c:a copy -s 1080x1920 -r 3
 alias cal='cal -my'
 t2d() { date -ud "@$1" '+%Y-%m-%d %H:%M:%S'; }
 d2t() { date -ud "$*" '+%s'; }
+# }}}
+# lsblk {{{
+alias lsblk='lsblk -o NAME,START,SIZE,TYPE,FSTYPE,LABEL,UUID,MOUNTPOINTS'
 # }}}
 # }}}
